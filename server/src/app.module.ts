@@ -5,6 +5,7 @@ import { AppService } from './app.service';
 import { ActionModule } from './domain/action/action.module';
 import { AnomalyModule } from './domain/anomaly/anomaly.module';
 import { AlertModule } from './domain/alert/alert.module';
+import { ReasonModule } from './domain/reason/reason.module';
 
 @Module({
   imports: [
@@ -13,6 +14,7 @@ import { AlertModule } from './domain/alert/alert.module';
     MongooseModule.forFeature([{ name: 'Action', schema: 'ActionSchema' }]),
     AnomalyModule,
     AlertModule,
+    ReasonModule,
   ],
   controllers: [AppController],
   providers: [AppService],

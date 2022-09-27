@@ -4,6 +4,6 @@ import { AnomalyController } from './anomaly.controller';
 
 @Module({
   controllers: [AnomalyController],
-  providers: [AnomalyService]
+  providers: [AnomalyService],
 })
 export class AnomalyModule {}
