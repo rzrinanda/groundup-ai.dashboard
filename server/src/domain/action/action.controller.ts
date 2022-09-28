@@ -29,7 +29,7 @@ export class ActionController {
     try {
       const actionData = await this.actionService.findAll();
       return response.status(HttpStatus.OK).json({
-        message: 'All students data found successfully', actionData,
+        message: 'All actions data found successfully', actionData,
       });
     } catch (err) {
       return response.status(err.status).json(err.response);

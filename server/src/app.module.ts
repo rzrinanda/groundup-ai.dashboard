@@ -16,7 +16,7 @@ import { Action, ActionSchema } from './domain/action/entities/action.entity';
     // MongooseModule.forRoot(process.env.API, { dbName: 'groundup_db' }),
     // MongooseModule.forRoot('mongodb://localhost:27017/studentdb'),
     // MongooseModule.forFeature([{ name: 'Action', schema: 'ActionSchema' }]),
-    MongooseModule.forRoot('mongodb://localhost/demo'),
+    MongooseModule.forRoot('mongodb://localhost/groundup_db'),
     MongooseModule.forFeature([{ name: Action.name, schema: ActionSchema }]),
     AnomalyModule,
     AlertModule,
