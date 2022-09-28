@@ -1,34 +1,75 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, HttpStatus, Res } from '@nestjs/common';
 import { ActionService } from './action.service';
 import { CreateActionDto } from './dto/create-action.dto';
 import { UpdateActionDto } from './dto/update-action.dto';
 
 @Controller('action')
 export class ActionController {
-  constructor(private readonly actionService: ActionService) {}
+  constructor(private readonly actionService: ActionService) { }
 
   @Post()
-  create(@Body() createActionDto: CreateActionDto) {
-    return this.actionService.create(createActionDto);
+  async create(@Res() response, @Body() createActionDto: CreateActionDto) {
+    try {
+      const newAction = await this.actionService.create(createActionDto);
+      return response.status(HttpStatus.CREATED).json({
+        message: 'Action has been created successfully',
+        newAction,
+      });
+    } catch (err) {
+      return response.status(HttpStatus.BAD_REQUEST).json({
+        statusCode: 400,
+        message: 'Error: Student not created!',
+        error: 'Bad Request'
+      });
+    }
   }
 
   @Get()
-  findAll() {
-    return this.actionService.findAll();
+  async findAll(@Res() response) {
+    try {
+      const actionData = await this.actionService.findAll();
+      return response.status(HttpStatus.OK).json({
+        message: 'All students data found successfully', actionData,
+      });
+    } catch (err) {
+      return response.status(err.status).json(err.response);
+    }
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.actionService.findOne(+id);
+  async findOne(@Res() response, @Param('id') id: string) {
+    try {
+      const existingAction = await
+        this.actionService.findOne(+id); return response.status(HttpStatus.OK).json({
+          message: 'Action found successfully', existingAction,
+        });
+    } catch (err) {
+      return response.status(err.status).json(err.response);
+    }
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateActionDto: UpdateActionDto) {
-    return this.actionService.update(+id, updateActionDto);
+  async update(@Res() response, @Param('id') id: string, @Body() updateActionDto: UpdateActionDto) {
+    try {
+      const existingAction = await this.actionService.update(+id, updateActionDto); return response.status(HttpStatus.OK).json({
+        message: 'Action has been successfully updated',
+        existingAction,
+      });
+    } catch (err) {
+      return response.status(err.status).json(err.response);
+    }
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.actionService.remove(+id);
+  async remove(@Res() response, @Param('id') id: string) {
+    try {
+      const deletedAction = await this.actionService.remove(+id);
+      return response.status(HttpStatus.OK).json({
+        message: 'Action deleted successfully',
+        deletedAction,
+      });
+    } catch (err) {
+      return response.status(err.status).json(err.response);
+    }
   }
 }
