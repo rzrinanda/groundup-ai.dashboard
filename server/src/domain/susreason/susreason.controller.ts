@@ -3,7 +3,7 @@ import { SusreasonService } from './susreason.service';
 import { CreateSusreasonDto } from './dto/create-susreason.dto';
 import { UpdateSusreasonDto } from './dto/update-susreason.dto';
 
-@Controller('reason')
+@Controller('susreason')
 export class SusreasonController {
   constructor(private readonly reasonService: SusreasonService) { }
 
