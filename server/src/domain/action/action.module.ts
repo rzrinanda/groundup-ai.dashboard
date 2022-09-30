@@ -5,7 +5,7 @@ import { Action, ActionSchema } from './entities/action.entity'
 import { MongooseModule } from '@nestjs/mongoose';
 
 @Module({
-  imports: [MongooseModule.forRoot('mongodb://localhost/demo'),
+  imports: [MongooseModule.forRoot('mongodb://localhost/groundup_db'),
   MongooseModule.forFeature([{ name: Action.name, schema: ActionSchema }])],
   controllers: [ActionController],
   providers: [ActionService],

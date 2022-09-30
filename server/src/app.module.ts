@@ -9,18 +9,20 @@ import { ReasonModule } from './domain/reason/reason.module';
 import { ActionController } from './domain/action/action.controller';
 import { ActionService } from './domain/action/action.service';
 import { Action, ActionSchema } from './domain/action/entities/action.entity';
+import { SusreasonModule } from './domain/susreason/susreason.module';
 
 @Module({
   imports: [
-    // ActionModule,
     // MongooseModule.forRoot(process.env.API, { dbName: 'groundup_db' }),
     // MongooseModule.forRoot('mongodb://localhost:27017/studentdb'),
     // MongooseModule.forFeature([{ name: 'Action', schema: 'ActionSchema' }]),
     MongooseModule.forRoot('mongodb://localhost/groundup_db'),
     MongooseModule.forFeature([{ name: Action.name, schema: ActionSchema }]),
+    // ActionModule,
     AnomalyModule,
     AlertModule,
     ReasonModule,
+    SusreasonModule,
   ],
   controllers: [AppController, ActionController],
   providers: [AppService, ActionService],

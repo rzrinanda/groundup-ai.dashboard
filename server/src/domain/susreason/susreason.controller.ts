@@ -1,19 +1,19 @@
 import { Controller, Get, Post, Body, Patch, Param, Delete, HttpStatus, Res } from '@nestjs/common';
-import { ReasonService } from './reason.service';
-import { CreateReasonDto } from './dto/create-reason.dto';
-import { UpdateReasonDto } from './dto/update-reason.dto';
+import { SusreasonService } from './susreason.service';
+import { CreateSusreasonDto } from './dto/create-susreason.dto';
+import { UpdateSusreasonDto } from './dto/update-susreason.dto';
 
 @Controller('reason')
-export class ReasonController {
-  constructor(private readonly reasonService: ReasonService) { }
+export class SusreasonController {
+  constructor(private readonly reasonService: SusreasonService) { }
 
   @Post()
-  async create(@Res() response, @Body() createReasonDto: CreateReasonDto) {
+  async create(@Res() response, @Body() createSusreasonDto: CreateSusreasonDto) {
     try {
-      const newReason = await this.reasonService.create(createReasonDto);
+      const newSusreason = await this.reasonService.create(createSusreasonDto);
       return response.status(HttpStatus.CREATED).json({
         message: 'Reason has been created successfully',
-        newReason,
+        newSusreason,
       });
     } catch (err) {
       return response.status(HttpStatus.BAD_REQUEST).json({
@@ -39,9 +39,9 @@ export class ReasonController {
   @Get(':id')
   async findOne(@Res() response, @Param('id') id: string) {
     try {
-      const existingReason = await
+      const existingSusreason = await
         this.reasonService.findOne(+id); return response.status(HttpStatus.OK).json({
-          message: 'Reason found successfully', existingReason,
+          message: 'Reason found successfully', existingSusreason,
         });
     } catch (err) {
       return response.status(err.status).json(err.response);
@@ -49,11 +49,11 @@ export class ReasonController {
   }
 
   @Patch(':id')
-  async update(@Res() response, @Param('id') id: string, @Body() updateReasonDto: UpdateReasonDto) {
+  async update(@Res() response, @Param('id') id: string, @Body() updateSusreasonDto: UpdateSusreasonDto) {
     try {
-      const existingReason = await this.reasonService.update(+id, updateReasonDto); return response.status(HttpStatus.OK).json({
+      const existingSusreason = await this.reasonService.update(+id, updateSusreasonDto); return response.status(HttpStatus.OK).json({
         message: 'Reason has been successfully updated',
-        existingReason,
+        existingSusreason,
       });
     } catch (err) {
       return response.status(err.status).json(err.response);
@@ -63,10 +63,10 @@ export class ReasonController {
   @Delete(':id')
   async remove(@Res() response, @Param('id') id: string) {
     try {
-      const deletedReason = await this.reasonService.remove(+id);
+      const deletedSusreason = await this.reasonService.remove(+id);
       return response.status(HttpStatus.OK).json({
         message: 'Reason deleted successfully',
-        deletedReason,
+        deletedSusreason,
       });
     } catch (err) {
       return response.status(err.status).json(err.response);

@@ -1,4 +1,4 @@
 import { PartialType } from '@nestjs/mapped-types';
 import { CreateReasonDto } from './create-reason.dto';
 
-export class UpdateReasonDto extends PartialType(CreateReasonDto) {}
+export class UpdateReasonDto extends PartialType(CreateReasonDto) { }

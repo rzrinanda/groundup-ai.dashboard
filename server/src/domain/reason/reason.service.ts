@@ -1,26 +1,46 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
+import { InjectModel } from '@nestjs/mongoose';
+import { Model } from 'mongoose';
 import { CreateReasonDto } from './dto/create-reason.dto';
 import { UpdateReasonDto } from './dto/update-reason.dto';
+import { IReason } from './interface/reason.interface';
 
 @Injectable()
 export class ReasonService {
-  create(createReasonDto: CreateReasonDto) {
-    return 'This action adds a new reason';
+
+  constructor(@InjectModel('Reason') private reasonModel: Model<IReason>) { }
+  async create(createReasonDto: CreateReasonDto): Promise<IReason> {
+    const newReason = await new this.reasonModel(createReasonDto)
+    return newReason.save()
   }
 
-  findAll() {
-    return `This action returns all reason`;
+  async findAll(): Promise<IReason[]> {
+    const reasonData = await this.reasonModel.find();
+    if (!reasonData || reasonData.length == 0) {
+      throw new NotFoundException('Reason data not found!');
+    }
+    return reasonData;
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} reason`;
+  async findOne(id: number): Promise<IReason> {
+    const existingReason = await this.reasonModel.findById(id).exec();
+    if (!existingReason) {
+      throw new NotFoundException(`Reason #${id} not found`);
+    }
+    return existingReason;
   }
 
-  update(id: number, updateReasonDto: UpdateReasonDto) {
-    return `This action updates a #${id} reason`;
+  async update(id: number, updateReasonDto: UpdateReasonDto): Promise<IReason> {
+    const existingReason = await this.reasonModel.findByIdAndUpdate(id, updateReasonDto, { new: true }); if (!existingReason) {
+      throw new NotFoundException(`Reason #${id} not found`);
+    }
+    return existingReason;
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} reason`;
+  async remove(id: number): Promise<IReason> {
+    const deletedReason = await this.reasonModel.findByIdAndDelete(id); if (!deletedReason) {
+      throw new NotFoundException(`Reason #${id} not found`);
+    }
+    return deletedReason;
   }
 }

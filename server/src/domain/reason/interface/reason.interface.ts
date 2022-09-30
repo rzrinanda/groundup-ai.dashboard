@@ -1,6 +1,6 @@
-import {Document} from 'mongoose'
+import { Document } from 'mongoose'
 
 export interface IReason extends Document {
-    readonly machine : string
-    readonly reason : string
+    readonly machine: string
+    readonly reason: string
 }
