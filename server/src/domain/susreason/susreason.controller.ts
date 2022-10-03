@@ -1,25 +1,40 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, HttpStatus, Res } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+  HttpStatus,
+  Res,
+} from '@nestjs/common';
 import { SusreasonService } from './susreason.service';
 import { CreateSusreasonDto } from './dto/create-susreason.dto';
 import { UpdateSusreasonDto } from './dto/update-susreason.dto';
 
 @Controller('susreason')
 export class SusreasonController {
-  constructor(private readonly reasonService: SusreasonService) { }
+  constructor(private readonly susreasonService: SusreasonService) {}
 
   @Post()
-  async create(@Res() response, @Body() createSusreasonDto: CreateSusreasonDto) {
+  async create(
+    @Res() response,
+    @Body() createSusreasonDto: CreateSusreasonDto,
+  ) {
     try {
-      const newSusreason = await this.reasonService.create(createSusreasonDto);
+      const newSusreason = await this.susreasonService.create(
+        createSusreasonDto,
+      );
       return response.status(HttpStatus.CREATED).json({
-        message: 'Reason has been created successfully',
+        message: 'Suspected Reason has been created successfully',
         newSusreason,
       });
     } catch (err) {
       return response.status(HttpStatus.BAD_REQUEST).json({
         statusCode: 400,
-        message: 'Error: Student not created!',
-        error: 'Bad Request'
+        message: 'Error: Suspected Reason not created!',
+        error: 'Bad Request',
       });
     }
   }
@@ -27,9 +42,10 @@ export class SusreasonController {
   @Get()
   async findAll(@Res() response) {
     try {
-      const reasonData = await this.reasonService.findAll();
+      const reasonData = await this.susreasonService.findAll();
       return response.status(HttpStatus.OK).json({
-        message: 'All reasons data found successfully', reasonData,
+        message: 'All reasons data found successfully',
+        reasonData,
       });
     } catch (err) {
       return response.status(err.status).json(err.response);
@@ -39,20 +55,29 @@ export class SusreasonController {
   @Get(':id')
   async findOne(@Res() response, @Param('id') id: string) {
     try {
-      const existingSusreason = await
-        this.reasonService.findOne(+id); return response.status(HttpStatus.OK).json({
-          message: 'Reason found successfully', existingSusreason,
-        });
+      const existingSusreason = await this.susreasonService.findOne(+id);
+      return response.status(HttpStatus.OK).json({
+        message: 'Suspected Reason found successfully',
+        existingSusreason,
+      });
     } catch (err) {
       return response.status(err.status).json(err.response);
     }
   }
 
   @Patch(':id')
-  async update(@Res() response, @Param('id') id: string, @Body() updateSusreasonDto: UpdateSusreasonDto) {
+  async update(
+    @Res() response,
+    @Param('id') id: string,
+    @Body() updateSusreasonDto: UpdateSusreasonDto,
+  ) {
     try {
-      const existingSusreason = await this.reasonService.update(+id, updateSusreasonDto); return response.status(HttpStatus.OK).json({
-        message: 'Reason has been successfully updated',
+      const existingSusreason = await this.susreasonService.update(
+        +id,
+        updateSusreasonDto,
+      );
+      return response.status(HttpStatus.OK).json({
+        message: 'Suspected Reason has been successfully updated',
         existingSusreason,
       });
     } catch (err) {
@@ -63,10 +88,23 @@ export class SusreasonController {
   @Delete(':id')
   async remove(@Res() response, @Param('id') id: string) {
     try {
-      const deletedSusreason = await this.reasonService.remove(+id);
+      const deletedSusreason = await this.susreasonService.remove(+id);
       return response.status(HttpStatus.OK).json({
-        message: 'Reason deleted successfully',
+        message: 'Suspected Reason deleted successfully',
         deletedSusreason,
+      });
+    } catch (err) {
+      return response.status(err.status).json(err.response);
+    }
+  }
+
+  @Post('/init')
+  async initialization(@Res() response) {
+    try {
+      const actionData = await this.susreasonService.initialization();
+      return response.status(HttpStatus.OK).json({
+        message: 'All Suspected Reason data found successfully',
+        actionData,
       });
     } catch (err) {
       return response.status(err.status).json(err.response);

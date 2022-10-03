@@ -9,26 +9,26 @@ import {
   HttpStatus,
   Res,
 } from '@nestjs/common';
-import { ActionService } from './action.service';
-import { CreateActionDto } from './dto/create-action.dto';
-import { UpdateActionDto } from './dto/update-action.dto';
+import { MachineService } from './machine.service';
+import { CreateMachineDto } from './dto/create-machine.dto';
+import { UpdateMachineDto } from './dto/update-machine.dto';
 
-@Controller('action')
-export class ActionController {
-  constructor(private readonly actionService: ActionService) {}
+@Controller('machine')
+export class MachineController {
+  constructor(private readonly actionService: MachineService) {}
 
   @Post()
-  async create(@Res() response, @Body() createActionDto: CreateActionDto) {
+  async create(@Res() response, @Body() createMachineDto: CreateMachineDto) {
     try {
-      const newAction = await this.actionService.create(createActionDto);
+      const newMachine = await this.actionService.create(createMachineDto);
       return response.status(HttpStatus.CREATED).json({
-        message: 'Action has been created successfully',
-        newAction,
+        message: 'Machine has been created successfully',
+        newMachine,
       });
     } catch (err) {
       return response.status(HttpStatus.BAD_REQUEST).json({
         statusCode: 400,
-        message: 'Error: Action not created!',
+        message: 'Error: Machine not created!',
         error: 'Bad Request',
       });
     }
@@ -39,7 +39,7 @@ export class ActionController {
     try {
       const actionData = await this.actionService.findAll();
       return response.status(HttpStatus.OK).json({
-        message: 'All actions data found successfully',
+        message: 'All machines data found successfully',
         actionData,
       });
     } catch (err) {
@@ -50,10 +50,10 @@ export class ActionController {
   @Get(':id')
   async findOne(@Res() response, @Param('id') id: string) {
     try {
-      const existingAction = await this.actionService.findOne(+id);
+      const existingMachine = await this.actionService.findOne(+id);
       return response.status(HttpStatus.OK).json({
-        message: 'Action found successfully',
-        existingAction,
+        message: 'Machine found successfully',
+        existingMachine,
       });
     } catch (err) {
       return response.status(err.status).json(err.response);
@@ -64,16 +64,16 @@ export class ActionController {
   async update(
     @Res() response,
     @Param('id') id: string,
-    @Body() updateActionDto: UpdateActionDto,
+    @Body() updateMachineDto: UpdateMachineDto,
   ) {
     try {
-      const existingAction = await this.actionService.update(
+      const existingMachine = await this.actionService.update(
         +id,
-        updateActionDto,
+        updateMachineDto,
       );
       return response.status(HttpStatus.OK).json({
-        message: 'Action has been successfully updated',
-        existingAction,
+        message: 'Machine has been successfully updated',
+        existingMachine,
       });
     } catch (err) {
       return response.status(err.status).json(err.response);
@@ -83,10 +83,10 @@ export class ActionController {
   @Delete(':id')
   async remove(@Res() response, @Param('id') id: string) {
     try {
-      const deletedAction = await this.actionService.remove(+id);
+      const deletedMachine = await this.actionService.remove(+id);
       return response.status(HttpStatus.OK).json({
-        message: 'Action deleted successfully',
-        deletedAction,
+        message: 'Machine deleted successfully',
+        deletedMachine,
       });
     } catch (err) {
       return response.status(err.status).json(err.response);
@@ -98,7 +98,7 @@ export class ActionController {
     try {
       const actionData = await this.actionService.initialization();
       return response.status(HttpStatus.OK).json({
-        message: 'All actions data found successfully',
+        message: 'All machines data found successfully',
         actionData,
       });
     } catch (err) {

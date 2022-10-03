@@ -10,6 +10,7 @@ import { ActionController } from './domain/action/action.controller';
 import { ActionService } from './domain/action/action.service';
 import { Action, ActionSchema } from './domain/action/entities/action.entity';
 import { SusreasonModule } from './domain/susreason/susreason.module';
+import { MachineModule } from './domain/machine/machine.module';
 
 @Module({
   imports: [
@@ -23,8 +24,9 @@ import { SusreasonModule } from './domain/susreason/susreason.module';
     AlertModule,
     ReasonModule,
     SusreasonModule,
+    MachineModule,
   ],
   controllers: [AppController, ActionController],
   providers: [AppService, ActionService],
 })
-export class AppModule { }
+export class AppModule {}
