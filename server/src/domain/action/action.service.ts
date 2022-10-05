@@ -11,7 +11,7 @@ import { IAction } from './interface/action.interface';
 
 @Injectable()
 export class ActionService {
-  constructor(@InjectModel('Action') private actionModel: Model<IAction>) {}
+  constructor(@InjectModel('Action') private actionModel: Model<IAction>) { }
   async create(createActionDto: CreateActionDto): Promise<IAction> {
     const newAction = await new this.actionModel(createActionDto);
     return newAction.save();
@@ -69,7 +69,7 @@ export class ActionService {
       process++;
     }
 
-    if (process == actions.length - 1) {
+    if (process == actions.length) {
       const actionData = await this.actionModel.find();
       if (!actionData || actionData.length == 0) {
         throw new NotFoundException('Action data not found!');

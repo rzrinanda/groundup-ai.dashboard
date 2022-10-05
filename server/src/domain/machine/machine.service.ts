@@ -11,7 +11,7 @@ import { IMachine } from './interface/machine.interface';
 
 @Injectable()
 export class MachineService {
-  constructor(@InjectModel('Machine') private machineModel: Model<IMachine>) {}
+  constructor(@InjectModel('Machine') private machineModel: Model<IMachine>) { }
   async create(createMachineDto: CreateMachineDto): Promise<IMachine> {
     const newMachine = await new this.machineModel(createMachineDto);
     return newMachine.save();
@@ -60,23 +60,23 @@ export class MachineService {
     const machines = [
       { machineName: 'CNC Machine', isActive: true },
       { machineName: 'Milling Machine', isActive: true },
-      {},
     ];
+    // console.log(machines)
     let process = 0;
     for (let a = 0; a < machines.length; a++) {
       const machineDto = machines[a];
       const isExist = await this.machineModel.findOne({
-        machineName: machines[a],
+        machineName: machines[a].machineName,
       });
-
+      // console.log(isExist, machines[a]);
       if (!isExist) {
         const newMachine = await new this.machineModel(machineDto);
         newMachine.save();
       }
       process++;
     }
-
-    if (process == machines.length - 1) {
+    // console.log(process, machines.length)
+    if (process == machines.length) {
       const machineData = await this.machineModel.find();
       if (!machineData || machineData.length == 0) {
         throw new NotFoundException('Machine data not found!');

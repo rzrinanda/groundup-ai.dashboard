@@ -15,28 +15,25 @@ export class ReasonService {
   constructor(
     @InjectModel('Reason') private reasonModel: Model<IReason>,
     @InjectModel('Machine') private machineModel: Model<IMachine>,
-  ) {}
+  ) { }
   async create(createReasonDto: CreateReasonDto): Promise<IReason> {
     const newReason = await new this.reasonModel(createReasonDto);
     return newReason.save();
   }
 
-  async findAll(): Promise<IModReason[]> {
-    const reasonData = await this.reasonModel.find().then((reason) => {
-      // console.log(reason);
-      const modReason: Promise<IModReason[]> = reason.map(async (r) => {
-        // console.log(r.machine);
+  async findAll(): Promise<any[]> {
+    const reasonData = await this.reasonModel.find().then(async (reason) => {
+      const modReason = await Promise.all(reason.map(async (r) => {
         const machine = await this.machineModel.findById(r.machine).exec();
-        console.log(machine.machineName);
         return {
           machine: r.machine,
           reason: r.reason,
           machineName: machine.machineName,
         };
-      });
+      }))
       return modReason;
-    });
-    // .populate('Machine', 'machineName', this.machineModel);
+    })
+
     if (!reasonData || reasonData.length == 0) {
       throw new NotFoundException('Reason data not found!');
     }
@@ -44,7 +41,7 @@ export class ReasonService {
   }
 
   async findOne(id: number): Promise<IReason> {
-    const existingReason = await this.reasonModel.findById(id).exec();
+    const existingReason = await (await this.reasonModel.findById(id)).populated('Machine').exec();
     if (!existingReason) {
       throw new NotFoundException(`Reason #${id} not found`);
     }
@@ -95,7 +92,7 @@ export class ReasonService {
       process++;
     }
 
-    if (process == reasons.length - 1) {
+    if (process == reasons.length) {
       const reasonData = await this.reasonModel.find();
       if (!reasonData || reasonData.length == 0) {
         throw new NotFoundException('Reason data not found!');

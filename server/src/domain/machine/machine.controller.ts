@@ -15,12 +15,12 @@ import { UpdateMachineDto } from './dto/update-machine.dto';
 
 @Controller('machine')
 export class MachineController {
-  constructor(private readonly actionService: MachineService) {}
+  constructor(private readonly machineService: MachineService) { }
 
   @Post()
   async create(@Res() response, @Body() createMachineDto: CreateMachineDto) {
     try {
-      const newMachine = await this.actionService.create(createMachineDto);
+      const newMachine = await this.machineService.create(createMachineDto);
       return response.status(HttpStatus.CREATED).json({
         message: 'Machine has been created successfully',
         newMachine,
@@ -37,10 +37,10 @@ export class MachineController {
   @Get()
   async findAll(@Res() response) {
     try {
-      const actionData = await this.actionService.findAll();
+      const machineData = await this.machineService.findAll();
       return response.status(HttpStatus.OK).json({
         message: 'All machines data found successfully',
-        actionData,
+        machineData,
       });
     } catch (err) {
       return response.status(err.status).json(err.response);
@@ -50,7 +50,7 @@ export class MachineController {
   @Get(':id')
   async findOne(@Res() response, @Param('id') id: string) {
     try {
-      const existingMachine = await this.actionService.findOne(+id);
+      const existingMachine = await this.machineService.findOne(+id);
       return response.status(HttpStatus.OK).json({
         message: 'Machine found successfully',
         existingMachine,
@@ -67,7 +67,7 @@ export class MachineController {
     @Body() updateMachineDto: UpdateMachineDto,
   ) {
     try {
-      const existingMachine = await this.actionService.update(
+      const existingMachine = await this.machineService.update(
         +id,
         updateMachineDto,
       );
@@ -83,7 +83,7 @@ export class MachineController {
   @Delete(':id')
   async remove(@Res() response, @Param('id') id: string) {
     try {
-      const deletedMachine = await this.actionService.remove(+id);
+      const deletedMachine = await this.machineService.remove(+id);
       return response.status(HttpStatus.OK).json({
         message: 'Machine deleted successfully',
         deletedMachine,
@@ -96,10 +96,10 @@ export class MachineController {
   @Post('/init')
   async initialization(@Res() response) {
     try {
-      const actionData = await this.actionService.initialization();
+      const machineData = await this.machineService.initialization();
       return response.status(HttpStatus.OK).json({
         message: 'All machines data found successfully',
-        actionData,
+        machineData,
       });
     } catch (err) {
       return response.status(err.status).json(err.response);
