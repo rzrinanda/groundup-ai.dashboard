@@ -1,13 +1,14 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { Date } from 'mongoose';
+import mongoose, { Date } from 'mongoose';
+import { Machine } from 'src/domain/machine/entities/machine.entity';
 
 @Schema()
 export class Anomaly {
   @Prop()
-  timestamp: Date;
+  timestamp: string;
 
-  @Prop()
-  machine: string;
+  @Prop({ type: mongoose.Schema.Types.ObjectId, ref: 'Machine' })
+  machine: Machine;
 
   @Prop()
   anomalyName: string;
