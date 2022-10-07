@@ -1,8 +1,8 @@
 import { IsNotEmpty, IsString } from "class-validator";
 
 export class CreateAnomalyDto {
-    @IsString()
-    @IsNotEmpty()
+    // @IsString()
+    // @IsNotEmpty()
     readonly timestamp: string;
 
     @IsString()
@@ -13,8 +13,8 @@ export class CreateAnomalyDto {
     @IsNotEmpty()
     readonly anomalyName: string;
 
-    @IsString()
-    @IsNotEmpty()
+    // @IsString()
+    // @IsNotEmpty()
     readonly sensor: string
 
     @IsString()

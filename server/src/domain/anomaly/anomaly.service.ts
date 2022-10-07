@@ -18,10 +18,13 @@ export class AnomalyService {
     @InjectModel('Machine') private machineModel: Model<IMachine>,
   ) { }
   async create(createAnomalyDto: CreateAnomalyDto): Promise<IAnomaly> {
-    const { timestamp } = createAnomalyDto
-    createAnomalyDto = { ...createAnomalyDto, timestamp: (+new Date()).toString(), sensor: RandomId(7) }
+    const machine: IMachine = await (this.machineModel.findOne({ machineName: createAnomalyDto.machine }).exec())
+    if (!machine) {
+      throw new NotFoundException(`Machine '${createAnomalyDto.machine}' not found`);
+    }
+    createAnomalyDto = { ...createAnomalyDto, timestamp: (+new Date()).toString(), sensor: RandomId(8), machine: machine._id }
     console.log(createAnomalyDto)
-    // createAnomalyDto.timestamp = + new Date()
+
     const newAnomaly = await new this.anomalyModel(createAnomalyDto);
     return newAnomaly.save();
   }
