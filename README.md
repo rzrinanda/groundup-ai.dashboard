@@ -17,5 +17,7 @@ Frontend:
        
        
  this repo outdated.
+ 
  Backend move to https://github.com/rzrinanda/groundup-server
+ 
  Frontend move to https://github.com/rzrinanda/groundup-client
